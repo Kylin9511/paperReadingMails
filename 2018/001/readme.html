@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <html>
     <head>
-      <title>001</title>
+      <title>readme</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -247,49 +247,49 @@ code.language-yaml {
 <p>本文提出了face alignment的最新架构：包含多个轮廓估计层的多中心点架构（<span style="color:brown">Multi-Center Learning with multiple shape prediction layers， MCL</span>）。具体来说，<span style="color:blue">每个SPL主要负责检测一簇语义相关的特征点，其中难以检测的特征点优先检测，而后对每一簇特征点分别针对性优化</span>。</p>
 <p>另外，为了降低模型的复杂度，<span style="color:blue">本文利用模型组合的思路把所有的sub-SPL整合成一个大SPL</span>。</p>
 <p>实验表明本文的方法能够更好地解决面部遮挡、同一个人不同的appearance等复杂的face alignment问题<span style="color:grey">[复杂例子和alignment结果如下图所示，下图为本篇的前序工作MCNet文章中的图例]</span>，并且维持实时性。</p>
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2017/001/001_01.png?raw=true" width="65%"></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_01.png?raw=true" width="55%"></center>
 <h1 class="mume-header" id="keys">Keys</h1>
 
 <p>本文有两个需要解析的关键点：网络结构和训练方式。</p>
 <h3 class="mume-header" id="1%E6%9C%AC%E6%96%87%E9%87%87%E7%94%A8%E7%9A%84%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E5%A6%82%E4%B8%8B">1.本文采用的网络结构如下：</h3>
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2017/001/001_02.png?raw=true" width="65%"></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_02.png?raw=true" width="55%"></center>
 <p>可以看到，预处理之后的图片输入网络后，通过三组(Conv, Conv, MaxPooling)模块后，输入后续的三层卷积中，再通过global pooling得到最终的特征。这个特征被同时送入m个SPL，最终通过assemble获得n个final landmarks。<span style="color:grey">[其中每个Conv后都附加了BN和ReLU]<br>
 </span></p>
 <h3 class="mume-header" id="2%E6%9C%AC%E6%96%87%E7%9A%84%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B%E6%9C%89%E5%A6%82%E4%B8%8B%E8%A6%81%E7%82%B9">2.本文的训练过程有如下要点：</h3>
 
 <h4 class="mume-header" id="21-%E8%AE%AD%E7%BB%83%E6%80%BB%E4%BD%93%E6%B5%81%E7%A8%8B">2.1 训练总体流程</h4>
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2017/001/001_03.png?raw=true" width="55%"></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_03.png?raw=true" width="55%"></center>
 <p>分为pre-train---weighting finetune---multi-center finetune---model assembling几个阶段，下面分别解析。</p>
 <h4 class="mume-header" id="22-loss%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1">2.2 Loss函数设计</h4>
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2017/001/001_04.png?raw=true" width="65%"></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_04.png?raw=true" width="55%"></center>
 <p>是一个含有weight，也即<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>w</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">w_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="base"><span class="mord"><span class="mord mathit" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"></span></span></span></span></span></span></span></span>的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mspace width="0.277778em"></mspace><msub><mtext>L</mtext><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\;\text{L}_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="base"><span class="mspace thickspace"></span><span class="mord"><span class="mord text"><span class="mord">L</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"></span></span></span></span></span></span></span></span> loss。</p>
 <h4 class="mume-header" id="23-weighting-finetune%E8%AE%BE%E8%AE%A1">2.3 weighting finetune设计</h4>
 
 <p>在训练的Step2中，前面六层卷积被固定，后三层卷积先进行finetune；而后在Step3中，整个网络进行最终的finetune。之所以称为weighting finetune，是因为在微调的时候，loss越大的路径上调整力度越大，由如下的weighting控制。这样一来，能够将有限的力量集中在challenging case上。</p>
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2017/001/001_05.png?raw=true" width="65%"></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_05.png?raw=true" width="55%"></center>
 <h4 class="mume-header" id="24-multi-center-finetune%E8%AE%BE%E8%AE%A1">2.4 multi-center finetune设计</h4>
 
 <p>进行到这一步后，前面的特征抽象网络全部训练完毕。开始训练SPL层。所谓的multi-center，是指把最终的landmarks分配到不同的几个簇，每个簇是一块面部特征对应的特征点集合，例如眼睛、鼻子、嘴、脸颊轮廓等<span style="color:grey">[如下图所示]</span>。然后每个SPL层针以某个簇为优化的中心，着力准确地刻画自己簇中所有landmark。</p>
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2017/001/001_06.png?raw=true" width="65%"></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_06.png?raw=true" width="55%"></center>
 <p>而进行multi-center focus的方案，也是设计启发式的weighting参数，最终公式如下。这个公式能够保障SPL对本簇内landmark的优化力度是簇外landmark的alpha倍。<span style="color:grey">[alpha &gt;&gt; 1]</span></p>
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2017/001/001_07.png?raw=true" width="65%"></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_07.png?raw=true" width="55%"></center>
 <h4 class="mume-header" id="25-model-assembling%E6%96%B9%E6%A1%88">2.5 model assembling方案</h4>
 
 <p>最终你会得到m个SPL，它们有不彼此重叠的center/簇。因此进行合并的最自然方案，就是使得最终生成的所有landmark都来自自己簇对应的SPL。而因为SPL之间簇没有重叠，这个融合过程可以通过直接融合weighting进行。<span style="color:grey">[这里有些绕，可能需要一定时间理解]</span></p>
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2017/001/001_08.png?raw=true" width="65%"></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_08.png?raw=true" width="55%"></center>
 <h4 class="mume-header" id="26-weight-matrix%E4%B8%8E%E5%8F%8D%E4%BC%A0%E7%9A%84%E7%BB%93%E5%90%88%E6%96%B9%E5%BC%8F">2.6 weight matrix与反传的结合方式</h4>
 
 <p>注意这个部分原文的表述比较有误导性。代表weighting的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.02691em;">w</span></span></span></span>和代表FC layer的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>W</mtext></mrow><annotation encoding="application/x-tex">\textbf{W}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68611em;"></span><span class="strut bottom" style="height:0.68611em;vertical-align:0em;"></span><span class="base"><span class="mord text"><span class="mord textbf">W</span></span></span></span></span>是完全没关系的，weighting会自然融合在反传里，起到的作用就是提高被focus的landmark的lr。</p>
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2017/001/001_09.png?raw=true" width="65%"></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_09.png?raw=true" width="55%"></center>
 <h1 class="mume-header" id="results">Results</h1>
 
 <p>下图给出了本文算法和常见同类算法的Mean Error对比。</p>
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2017/001/001_10.png?raw=true" width="55%"></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_10.png?raw=true" width="55%"></center>
 <p>下图给出了本文算法和前序工作MCNet的Mean Error对比：</p>
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2017/001/001_11.png?raw=true" width="65%"></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_11.png?raw=true" width="55%"></center>
 <h1 class="mume-header" id="insights">Insights</h1>
 
 <p>文章中设计的结构，在作者分析中有三个主要的好处：</p>
