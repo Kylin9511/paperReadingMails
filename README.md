@@ -6,7 +6,7 @@ __为了格式考虑，建议下载html文件后用浏览器打开查看__
 
 # 推送列表
 
-|推送编号|  推送时间   |    方向   |     要点    |     链接     |
+|推送编号|  推送时间   |    方向   |     文章标题和要点    |     链接     |
 |:-----:|:----------:|:--------:|:----------:|:-------------|
 |  001  |  2018.9.6  |  人脸匹配 |  _Deep Multi-Center Learning for Face Alignment_ <br>本文通过多轮廓估计层（shape prediction layer, SPL）更好地在遮挡、多相外观等复杂数据条件下解决了face alignment问题。| [URL](https://github.com/luzhilin19951120/paperReadingMails/tree/master/2018/001) |
 |  002  |  2018.9.14  | 物体检测 | _Acquisition of Localization Confidence for Accurate Object Detection_ <br>利用IoU-Net提升NMS选框的性能，并利用新的方法微调选出的bbox最终提高检测性能。| [URL](https://github.com/luzhilin19951120/paperReadingMails/tree/master/2018/002) |
