@@ -36,7 +36,7 @@ https://github.com/ZhiwenShao/MCNet-Extension
 
 实验表明本文的方法能够更好地解决面部遮挡、同一个人不同的appearance等复杂的face alignment问题<span style="color:grey">[复杂例子和alignment结果如下图所示，下图为本篇的前序工作MCNet文章中的图例]</span>，并且维持实时性。
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_01.png?raw=true" width = "65%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_01.png?raw=true" width = "55%" /></center>
 
 # Keys
 
@@ -44,7 +44,7 @@ https://github.com/ZhiwenShao/MCNet-Extension
 
 ### 1.本文采用的网络结构如下：
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_02.png?raw=true" width = "65%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_02.png?raw=true" width = "55%" /></center>
 
 可以看到，预处理之后的图片输入网络后，通过三组(Conv, Conv, MaxPooling)模块后，输入后续的三层卷积中，再通过global pooling得到最终的特征。这个特征被同时送入m个SPL，最终通过assemble获得n个final landmarks。<span style="color:grey">[其中每个Conv后都附加了BN和ReLU]
 </span>
@@ -59,7 +59,7 @@ https://github.com/ZhiwenShao/MCNet-Extension
 
 #### 2.2 Loss函数设计
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_04.png?raw=true" width = "65%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_04.png?raw=true" width = "55%" /></center>
 
 是一个含有weight，也即$w_j$的$\;\text{L}_2$ loss。
 
@@ -67,28 +67,28 @@ https://github.com/ZhiwenShao/MCNet-Extension
 
 在训练的Step2中，前面六层卷积被固定，后三层卷积先进行finetune；而后在Step3中，整个网络进行最终的finetune。之所以称为weighting finetune，是因为在微调的时候，loss越大的路径上调整力度越大，由如下的weighting控制。这样一来，能够将有限的力量集中在challenging case上。
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_05.png?raw=true" width = "65%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_05.png?raw=true" width = "55%" /></center>
 
 #### 2.4 multi-center finetune设计
 
 进行到这一步后，前面的特征抽象网络全部训练完毕。开始训练SPL层。所谓的multi-center，是指把最终的landmarks分配到不同的几个簇，每个簇是一块面部特征对应的特征点集合，例如眼睛、鼻子、嘴、脸颊轮廓等<span style="color:grey">[如下图所示]</span>。然后每个SPL层针以某个簇为优化的中心，着力准确地刻画自己簇中所有landmark。
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_06.png?raw=true" width = "65%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_06.png?raw=true" width = "55%" /></center>
 
 而进行multi-center focus的方案，也是设计启发式的weighting参数，最终公式如下。这个公式能够保障SPL对本簇内landmark的优化力度是簇外landmark的alpha倍。<span style="color:grey">[alpha >> 1]</span>
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_07.png?raw=true" width = "65%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_07.png?raw=true" width = "55%" /></center>
 
 #### 2.5 model assembling方案
 最终你会得到m个SPL，它们有不彼此重叠的center/簇。因此进行合并的最自然方案，就是使得最终生成的所有landmark都来自自己簇对应的SPL。而因为SPL之间簇没有重叠，这个融合过程可以通过直接融合weighting进行。<span style="color:grey">[这里有些绕，可能需要一定时间理解]</span>
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_08.png?raw=true" width = "65%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_08.png?raw=true" width = "55%" /></center>
 
 #### 2.6 weight matrix与反传的结合方式
 
 注意这个部分原文的表述比较有误导性。代表weighting的$w$和代表FC layer的$\textbf{W}$是完全没关系的，weighting会自然融合在反传里，起到的作用就是提高被focus的landmark的lr。
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_09.png?raw=true" width = "65%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_09.png?raw=true" width = "55%" /></center>
 
 # Results
 
@@ -98,7 +98,7 @@ https://github.com/ZhiwenShao/MCNet-Extension
 
 下图给出了本文算法和前序工作MCNet的Mean Error对比：
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_11.png?raw=true" width = "65%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/001/001_11.png?raw=true" width = "55%" /></center>
 
 # Insights
 
