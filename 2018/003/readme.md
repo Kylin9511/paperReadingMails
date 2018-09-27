@@ -54,7 +54,7 @@ SFP有两个主要的优势：
 而SFP则是把模型实时打残实时上药，而且看不行了就扶一下。<span style="color:grey">[在训练过程中保留模型的全部描述能力，只不过限制描述的效果]</span>
 因此虽然大家最后都是残废了，但是SFP的方式打残的模型能跑得更远。<span style="color:grey">[如下图]</span>
 
-<center><img src="./003_01.png?raw=true" width = "50%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/003/003_01.png?raw=true" width = "50%" /></center>
 
 - <span style="color:red">dependence on pre-trained models</span>。一般的hard pruning需要对完整模型的充分训练结果作为输入。而SFP由于是一边训练一边pruning，对pre-trained model没有需求，也自然不会被pre-trained model的性能影响。
 
@@ -64,15 +64,15 @@ SFP的关键思路可以总结如下：
 1. 整个网络设置一个压缩率$P\%$，目标是把每个layer的filter数都压到原本的(1-P%)倍。
 2. 于是在正常的训练每个epoch的训练后，都对每层各个filter中$l_2$范数最小的$P\%$个强行置零。<span style="color:blue">但是仍然允许它们参与下一轮的训练和参数更新（称为Reconstruction）。这样一来，其中有一些在后续迭代中较为重要的filter还有机会“重出江湖”</span>。<span style="color:grey">[如下图]</span>
 
-<center><img src="./003_02.png?raw=true" width = "90%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/003/003_02.png?raw=true" width = "90%" /></center>
 
 SFP的算法伪代码如下图所示
 
-<center><img src="./003_03.png?raw=true" width = "45%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/003/003_03.png?raw=true" width = "45%" /></center>
 
 其中
 
-<center><img src="./003_04.png?raw=true" width = "50%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/003/003_04.png?raw=true" width = "50%" /></center>
 
 p.s.在整个网络训练结束后，将最后一轮SFP中pruning掉的filter直接干掉就能得到实际的小模型了。这里会存在一个前后对应的问题，而<span style="color:red">这个问题在ResNet结构的网络中会变得尤其突出，甚至影响到了SFP的实际pruning rate和效果对比可靠性</span>。
 
@@ -96,13 +96,13 @@ $$Ratio=1-(1-p)^2=2p-p^2$$
 结果大表如下
 
 <center>
-<img src="./003_05.png?raw=true" width = "80%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/003/003_05.png?raw=true" width = "80%" />
 
 CIFAR上几种方法对不同深度的ResNet进行pruning的结果对比
 </center>
 
 <center>
-<img src="./003_06.png?raw=true" width = "80%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/003/003_06.png?raw=true" width = "80%" />
 
 ImageNet上几种方法对不同深度的ResNet进行pruning的结果对比
 </center>
