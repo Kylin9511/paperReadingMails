@@ -10,3 +10,5 @@ __为了格式考虑，建议下载html文件后用浏览器打开查看__
 |:-----:|:----------:|:--------:|:----------:|:-------------|
 |  001  |  2018.9.6  |  人脸匹配 |  _Deep Multi-Center Learning for Face Alignment_ <br>本文通过多轮廓估计层（shape prediction layer, SPL）更好地在遮挡、多相外观等复杂数据条件下解决了face alignment问题。| [URL](https://github.com/luzhilin19951120/paperReadingMails/tree/master/2018/001) |
 |  002  |  2018.9.14  | 物体检测 | _Acquisition of Localization Confidence for Accurate Object Detection_ <br>利用IoU-Net提升NMS选框的性能，并利用新的方法微调选出的bbox最终提高检测性能。| [URL](https://github.com/luzhilin19951120/paperReadingMails/tree/master/2018/002) |
+|  003  |  2018.9.23  | 模型压缩 | _Soft Filter Pruning for Accelerating Deep Convolutional Neural Networks_ <br>通过channel wise的网络软剪枝保留更多网络描述能力，从而在同样的pruning rate下取得更高的performance!| [URL](https://github.com/luzhilin19951120/paperReadingMails/tree/master/2018/003) |
+|  004  |  2018.9.27  | 模型压缩 | _AMC: AutoML for Model Compression and Acceleration on Mobile Devices_ <br>Song Han组新工作，利用网络自动搜索技术进行网络压缩，并取得超过手动压缩的性能。| [URL](https://github.com/luzhilin19951120/paperReadingMails/tree/master/2018/004) |
