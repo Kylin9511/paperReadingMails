@@ -37,7 +37,7 @@ https://arxiv.org/pdf/1810.00091.pdf
 传统DenseNet和其中的Dropout模块如下图所示
 
 <center>
-<img src="./005_01.png?raw=true" width = "70%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/005/005_01.png?raw=true" width = "70%" />
 
 Fig.1 传统DenseNet和dropout基本模式示意图
 </center>
@@ -50,7 +50,7 @@ Fig.1 传统DenseNet和dropout基本模式示意图
 
 ###1. pre-dropout结构
 <center>
-<img src="./005_02.png?raw=true" width = "80%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/005/005_02.png?raw=true" width = "80%" />
 
 Fig.2 Standart dropout和pre-dropout的对比图
 </center>
@@ -64,7 +64,7 @@ Fig.2 Standart dropout和pre-dropout的对比图
 ###2. channel-wise dropout
 
 <center>
-<img src="./005_03.png?raw=true" width = "70%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/005/005_03.png?raw=true" width = "70%" />
 
 Fig.3 Unit-wise, Channel-wise, Layer-wise dropout对比图
 </center>
@@ -78,7 +78,7 @@ layer-wise策略显然过度激进了，在drop的时候丢失了太大的信息
 ###3. stochastic probability schedule
 
 <center>
-<img src="./005_04.png?raw=true" width = "80%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/005/005_04.png?raw=true" width = "80%" />
 
 Fig.4 不同调度策略
 </center>
@@ -98,7 +98,7 @@ Fig.4 不同调度策略
 # Results
 
 <center>
-<img src="./005_05.png?raw=true" width = "70%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/005/005_05.png?raw=true" width = "70%" />
 
 Fig.5 CIFAR上实验结果
 </center>
@@ -108,7 +108,7 @@ Fig.5 CIFAR上实验结果
 文章中还进行了多组对比实验，说明Keys中的策略的有效性。大家不用看基本也能把数据编出来，故略过不表。
 
 <center>
-<img src="./005_06.png?raw=true" width = "45%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/005/005_06.png?raw=true" width = "45%" />
 
 Fig.5 Specialized Dropout在其他backbone上的表现
 </center>
