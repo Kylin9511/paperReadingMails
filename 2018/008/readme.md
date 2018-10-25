@@ -55,7 +55,16 @@ Under review as a conference paper at International Conference on Machine Learni
 本文作为channel pruning的开山之作，自然使用的是很简洁的方式。具体来说就是使得每一层当中$L_1$范数最小的某个比例 $p$ 的channel被剪枝。
 
 2. [ThiNet](http://openaccess.thecvf.com/content_ICCV_2017/papers/Luo_ThiNet_A_Filter_ICCV_2017_paper.pdf)
-这篇文章是ICCV 2017的会议文章，思路更进一步。同样按比例剪枝channel，但是criterion改为优先选择下一层
+这篇文章是ICCV 2017的会议文章，思路更进一步。同样按比例剪枝channel，但是criterion改为优先选择下一层的feature map中参数最小的channel对应的卷积核进行剪枝。从直觉上，这样会更加靠近我们pruning同时不影响acc性能的意图。
+<center><img src="./008_01.png?raw=true" width = 55%" /></center>
+
+3. [regression based Feature Reconstruction](http://openaccess.thecvf.com/content_ICCV_2017/papers/He_Channel_Pruning_for_ICCV_2017_paper.pdf)
+这篇文章是ICCV 2017的会议文章，思路更更进一步。同样按比例剪枝channel，但是criterion改为尽量使得剪枝后下下层的feature map受影响最小。显然这又进一步试图保留原网络的性能。
+<center><img src="./008_02.png?raw=true" width = 55%" /></center>
+
+4. [Network Slimming](http://openaccess.thecvf.com/content_ICCV_2017/papers/Liu_Learning_Efficient_Convolutional_ICCV_2017_paper.pdf)
+这篇文章是ICCV 2017的会议文章，与前面文章不同，本文是在训练过程中自动产生每个层的pruning rate，所以结构不经过训练无法得到。
+
 # Results
 
 May the force be with you
