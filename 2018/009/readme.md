@@ -2,106 +2,70 @@
 
 大家好：
 
- <b><span style="color:green">这是2018年度第6篇Arxiv Weekly。</span> </b>
+ <b><span style="color:green">这是2018年度第8篇Arxiv Weekly。</span> </b>
 
-本文是 __模型研究__ 方向的文章。
+本文是 __模型压缩__ 方向的文章。
 
 # Highlight
 
-> __通过弹性网络架构压制梯度消失来提升部分backbone的性能，同时赋予网络快速inference的能力__
+> __对网络压缩技术的探究性工作，指出了几个旧有的错误印象，得出了新的指导性结论，能够辅助优化网络压缩过程__
 
 # Information
 
 ### Title
-_Elastic Neural Networks for Classification_
+_Rethinking the Value of Network Pruning_
 
 ### Link
-https://arxiv.org/pdf/1810.00589.pdf
+https://arxiv.org/pdf/1810.05270.pdf
 
 ### Source
 
-- 坦佩雷理工大学（Tampere University of Technology）
-- 马里兰大学学院市分校（University of Maryland）
+- 加州伯克利大学（University of California, Berkeley）
+- 清华大学（Tsinghua University）
+
+### Publication
+
+Under review as a conference paper at International Conference on Machine Learning (ICLR) 2019
 
 # Introduction
 
-本文提出了一种通过解决梯度消失问题提升神经网络性能的架构，能够运用在任何深度神经网络当中。
+神经网络压缩作为实现神经网络小型化的主流技术之一，引发了广泛的关注。传统的神经网络压缩算法架构主要是三段式的： __训练大型网络->剪枝->finetune__。其核心是在剪枝过程中设计某种策略或者评价标准，使得不重要的参数被剪掉；而重要的参数被保留。从而实验压缩模型、acc基本不降低。
 
- <span style="color:blue">这个架构通过在每个层后插入一个中间输出分支，并将输出分支的loss融合在最后的loss中，使得梯度反传的时候每个layer的输出分支都有自己的贡献</span>。
+本文中通过实验发现了“反常识”的现象。首先我们通过对6个state-of-the-art的pruning算法的实验，发现<span style="color:blue">对训练好的大网络进行剪枝-finetune，其性能不如对剪枝后的网络进行重训（此时用random initialization）来得好</span>。故而如果剪枝算法中假设了目标网络的结构，那么之前复杂的pipeline没有太大的意义。
 
-我们将这个架构命名为弹性网络（Elastic Network），并在CIFAR上进行了综合实验。试验结果表明弹性网络架构在某些小网络（MobileNet）和某些深度网络（DenseNet）上都表现良好，能够提升网络的acc。而在另外一些backbone上弹性网络表现不佳，文章中也讨论了可能的原因。
-
-另外值得一提的是，加入弹性架构的网络天然可以通过early exit的方式加速inference，或者说在性能和效率中方便地进行折中。这可以说是弹性网络架构的一个有趣的副产物。
+通过对多个剪枝算法、多个数据集、多个任务的交叉组合验证，我们发现了如下的现象/结论：
+- 获取高效的小网络 __不需要__ 训练一个大规模的、参数/描述能力过冗余的网络
+- 经过剪枝的小网络参数 __不需要__ 参考充分训练获得的原网络的对应参数。
+- 一个经过剪枝的小网络是否高效，核心不在于保留了大网络中的哪些参数，而是剪枝后是什么结构。传统的剪枝pipeline之所以work，不是因为挑选和保留了大网络中足够重要的参数，而是这个挑选的过程耦合了一个网络结构搜索过程。 __换言之，pruning其实是一种NAS技术__。
 
 # Keys
 
-可以说梯度消失的问题是阻碍神经网络获得良好性能的关键问题。而许多主流的技术之所以成为主流，正是因为它们解决了这样的问题。例如 __ReLU激活函数（解决softmax、tanh等激活函数边缘消失的现象）、正则化（BN、dropout、loss中的L1/L2惩罚项等）、含identity path的resnet系列架构（给梯度一个无损传递的路径）等技术__。
+### 问题和背景
 
-不过有趣的是，<span style="color:blue">传统的技术大多试图尽可能让梯度按原路径传递的同时保留下来，等于给梯度装上盔甲。基本没有主流技术采用将梯度直接跨过消耗性中间步骤，通过short cut直达终点的思路</span>。
+在传统上，我们认为神经网络的“over parameterization”是显然的和需要解决的。而pruning则是解决这个问题的最直接手段之一。
 
-本文针对这个问题提出了另一种解决方案，将原有架构改成弹性的（Elastic）的，在每个层后面抽象出来一个中间变量层和中间变量loss，最终把所有的loss联合起来构成final loss。这就为每一层的梯度搭建了一个无损传递的桥梁。其架构示意图如下：
+而在之前的观念里，以及之前pruning相关的文章中，训练出一个准确的，强大的大网络对剪枝后的网络很重要。<span style="color:red">因为小网络的参数基本是使用大网络剪枝后获得的参数进行finetune得到的，而这么做是因为主流认为大网络经过充分训练能够得到强有力的参数，值得继承</span>。
 
-<center>
-<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/006/006_01.png?raw=true" width = "80%" />
+本文认为不然。
 
-_Fig.1 Elastic Network Architecture_
-</center>
+本文的核心想法是，pruning后小网络效果好，不依赖于大网络的参数，而依赖于小网络的结构本身。大网络参数在完成了“挑选小网络结构特性”的使命后就成为了累赘，没有太大保留价值。
 
-实际上，之前的一些工作表明这样添加extra output的方法是有其优势的：
-- Inception的分支结构中添加auxiliary output后，在ImageNet1k上的acc涨了0.4%。
-- Deeply-supervised Nets中的实验表明在每个layer后添加SVM classifier后performance更加稳定，网络的收敛性也提高了。
-- 有人尝试在AlexNet中加入两个中间输出层，结果同时提升了early和final输出的acc。
+为了证明这个观点，本文参考了六种最新的pruning算法/架构作为实验的背景。现列举如下：
 
-本文的工作实际上是对extra output思路的一种极限推广， <span style="color:blue">也即每个layer/block（特别深的网络在每个layer后均添加太密集了，不可行）后都附加一个extra output、每个extra output都有相同的结构（Global pooling->Dropout->Fully connected->Softmax）</span>。示例如下图所示：
+1. [$L_1$-norm based channel pruning](https://www.researchgate.net/profile/Igor_Durdanovic/publication/307536925_Pruning_Filters_for_Efficient_ConvNets/links/585189cf08ae95fd8e168343/Pruning-Filters-for-Efficient-ConvNets.pdf)。
+这篇文章是ICLR 2017的会议文章，也是最早提出做channel pruning的文章。<span style="color:gray">[关于weight/channel/layer pruning，可参考之前的[Arxiv Weekly 2018/004](https://github.com/luzhilin19951120/paperReadingMails/tree/master/2018/004)中的论述]</span>
+本文作为channel pruning的开山之作，自然使用的是很简洁的方式。具体来说就是使得每一层当中$L_1$范数最小的某个比例 $p$ 的channel被剪枝。
 
-<center>
-<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/006/006_02.png?raw=true" width = "50%" />
-
-_Fig.2 The intermediate output on the first “depth-conv” block in MobileNet on CIFAR 100_
-</center>
-
-另外，可以提一提loss函数的细节。本文当中采用的就是softmax loss，如下图所示
-
-<center>
-<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/006/006_03.png?raw=true" width = "55%" />
-
-_Fig.3 loss function for layer i, where $\hat y$ is calculated from softmax and y is the one hot ground truth label vector._
-</center>
-
-并且在每一层完成计算后，通过加权求和给出最终的loss。文章中没有探索最佳的权重设定方式，直接都设计为1。
-
-<center>
-<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/006/006_04.png?raw=true" width = "55%" />
-
-_Fig.4 the final loss function._
-</center>
-
+2. [ThiNet](http://openaccess.thecvf.com/content_ICCV_2017/papers/Luo_ThiNet_A_Filter_ICCV_2017_paper.pdf)
+这篇文章是ICCV 2017的会议文章，思路更进一步。同样按比例剪枝channel，但是criterion改为优先选择下一层
 # Results
 
-文章象征性地在CIFAR上进行了实验。数据没有增强，仅仅resize到了224×224×3的大小上。实验平台是Keras。
-
-在训练时， <span style="color:blue">由于过多的dropout的引入，在前面的数十个epochs会固定pretrained network，只对Elastic部分的新增模块进行微调。然后再放开全部网络整体训练</span>。
-
-<center>
-<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/006/006_05.png?raw=true" width = "80%" />
-
-_Fig.5 Testing Error on CIFAR._
-</center>
-
-从上图可以看出，Elastic架构在MobileNet和DenseNet这样的架构上还是相当有效的；而对比之下：在ResNet这样把梯度消失问题解决地较有力度的架构中；或者 <span style="color:red">在VGG这样的浅层网络中，密集添加Elastic模块则会适得其反</span>。
-
-<center>
-<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/006/006_06.png?raw=true" width = "55%" />
-
-_Fig.6 Testing Error on DenseNet-169 on different depth._
-</center>
-
-上图描述了另一件有意思的事情： <span style="color:blue">添加Elastic架构后，网络天然可以兼容early exit。对比相同层数的完整网络和大网络early exit，似乎在DenseNet+CIFAR的benchmark下，后者是明显占优的</span>。
+May the force be with you
 
 # Insights
 
-本文是比较有意思的一篇文章，值得一提的是其实Elastic这个概念是很多元化的，上网查询能够查到很多和本文中Elastic Network毫不相关的Elastic  Network……
+May the force be with you
 
-Elastic Net其实就是把early exit模块化并且密集插入训练的一种尝试，感觉上有一定的道理。
+-  <span style="color:red">May the force be with you</span> <span style="color:grey">[May the force be with you]</span>
 
- <span style="color:red">缺憾很明显：文章的实验给予CIFAR，并且对比很不完善。</span>因此我们要进一步探究的话首先是补全实验，然后是探索里面细节的原理和改动的可能，尽量让它在ResNet系列网络中也能够work。这个想法才有大规模落地的意义。
+<center><img src="./001_01.png?raw=true" width = "80%" /></center>
