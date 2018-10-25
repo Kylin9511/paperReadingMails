@@ -63,11 +63,67 @@ Under review as a conference paper at International Conference on Machine Learni
 <center><img src="./008_02.png?raw=true" width = 55%" /></center>
 
 4. [Network Slimming](http://openaccess.thecvf.com/content_ICCV_2017/papers/Liu_Learning_Efficient_Convolutional_ICCV_2017_paper.pdf)
-这篇文章是ICCV 2017的会议文章，与前面文章不同，本文是在训练过程中自动产生每个层的pruning rate，所以结构不经过训练无法得到。
+这篇文章是ICCV 2017的会议文章，<span style="color:blue">与前面文章不同，本文是在训练过程中自动产生每个层的pruning rate，所以结构不经过训练无法得到</span>。
+实际上，本文采用的方式是引用BN层的scaler$\alpha$作为scaling factor，然后动态剪枝去除其中不重要的channel。因此是一种动态稀疏化网络的操作。
+<center><img src="./008_03.png?raw=true" width = 85%" /></center>
+
+5. [Sparse Structure Seletction](https://arxiv.org/pdf/1707.01213.pdf)
+这篇文章是ECCV 2018会议文章。文章是Network Slimming的变体，仍然是生成了scaling factor指导pruning，只不过不是channel pruning而是block pruning。有些像[BlockDrop: Dynamic Inference Paths in Residual Networks](http://openaccess.thecvf.com/content_cvpr_2018/papers/Wu_BlockDrop_Dynamic_Inference_CVPR_2018_paper.pdf)一文。
+<center><img src="./008_04.png?raw=true" width = 85%" /></center>
+
+6. [Non-structured Weight Pruning](https://papers.nips.cc/paper/5784-learning-both-weights-and-connections-for-efficient-neural-network.pdf)
+这篇文章为NIPS 2015会议文章，韩松代表作之一，引用已经800+。核心方法是“啥也不说，就是硬干”，直接进行element-wise pruning，然后finetune。后续还有所谓的DSD等方法，其实就是反复硬干。至于pruning rate就是手工大量实验堆叠出一个最佳值即可。
+<center><img src="./008_05.png?raw=true" width = 85%" /></center>
 
 # Results
 
-May the force be with you
+本文属于探究性质的论文，所以results的作用是探索和证明文章的观点。
+
+文章把6个baseline网络分为两类，一类是所谓的Pre-defined Target Architecture；另一类是所谓的Automatically Discovered Target Architecture。其区别就是不训练能不能画出来大概的结构，如下图所示：
+<center><img src="./008_06.png?raw=true" width = 45%" /></center>
+
+在训练参数上，文章采用了CIFAR10/100和ImageNet的经典参数，和VGG、ResNet、DenseNet的经典backbone，pruning method就是前文所述的6个。
+
+需要特别注意的一点是，文章对traning budget重点进行了测试。所谓的training budget也即当模型压缩后，进行重新训练的时候，是按照相同的epochs数训还是按照相同的FLOPs训。 <span style="color:blue">文章认为至少要允许进行同FLOPs的训练才有公平的比较可能。故文章中所有的重训网络都有两组对照，也即Scratch-E和Scratch-B，前者保证训练epochs数相同；后者保证训练FLOPs数相同</span>。
+
+另外值得一提的是，文章复现了6个benchmark，对于文章中没有提到训练参数的情况都重新跑了。并且<span style="color:red">diss了一些文章作者，表示复现的大网络性能明显好于文章中提到的性能，也即怀疑原文为了凸显pruning的性能压低了大网络的性能。</span>具体没跑，不得而知。
+
+1. [$L_1$-norm based channel pruning](https://www.researchgate.net/profile/Igor_Durdanovic/publication/307536925_Pruning_Filters_for_Efficient_ConvNets/links/585189cf08ae95fd8e168343/Pruning-Filters-for-Efficient-ConvNets.pdf)。
+<center><img src="./008_07.png?raw=true" width = 85%" /></center>
+
+2. [ThiNet](http://openaccess.thecvf.com/content_ICCV_2017/papers/Luo_ThiNet_A_Filter_ICCV_2017_paper.pdf)
+
+<center><img src="./008_08.png?raw=true" width = 85%" /></center>
+
+3. [regression based Feature Reconstruction](http://openaccess.thecvf.com/content_ICCV_2017/papers/He_Channel_Pruning_for_ICCV_2017_paper.pdf)
+
+<center><img src="./008_09.png?raw=true" width = 85%" /></center>
+
+4. [Network Slimming](http://openaccess.thecvf.com/content_ICCV_2017/papers/Liu_Learning_Efficient_Convolutional_ICCV_2017_paper.pdf)
+
+<center><img src="./008_10.png?raw=true" width = 85%" /></center>
+
+5. [Sparse Structure Seletction](https://arxiv.org/pdf/1707.01213.pdf)
+
+<center><img src="./008_11.png?raw=true" width = 85%" /></center>
+
+6. [Non-structured Weight Pruning](https://papers.nips.cc/paper/5784-learning-both-weights-and-connections-for-efficient-neural-network.pdf)
+
+<center><img src="./008_12.png?raw=true" width = 85%" /></center>
+
+其结论基本是统一的，就是或者Scratch-E，或者Scratch-B，能够持平或者超出利用原模型参数finetune的结果。
+
+# Further Exploration
+
+文章对实验验证进行了进一步的分析探究。也即解释既然传统的pruning没有能够真正选出“有意义”的最佳参数，为什么还是非常work。
+
+主要的解释是，pruning操作天然的是非常高效和合理的网络结构搜索方案，能够得出更优化的小网络结构，因此做到了“模型压缩，精度不降”。
+
+为了验证这个想法，作者测试了“胡乱压缩”和用验证有效的压缩策略压缩，带来的“网络参数效率”的不同，如下图所示：
+<center><img src="./008_13.png?raw=true" width = 85%" /></center>
+
+另外，作者发现经过优秀的压缩pipeline得到的小网络结构，其实是倾向于“有规律可循”的，也就是说其实压缩类似于一个天然的小网络设计过程，设计出来的东西符合一定的规律，而不是乱七八糟无章可循。
+<center><img src="./008_14.png?raw=true" width = 85%" /></center>
 
 # Insights
 
