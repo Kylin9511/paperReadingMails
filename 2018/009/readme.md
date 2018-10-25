@@ -4,11 +4,11 @@
 
  <b><span style="color:green">这是2018年度第X篇Arxiv Weekly。</span> </b>
 
-本文是 __May the force be with you__ 方向的文章。
+本文是 __模型压缩__ 方向的文章。
 
 # Highlight
 
-> __May the force be with you__
+> __对网络压缩技术的探究性工作，指出了几个旧有的错误印象，得出了新的指导性结论，能够辅助优化网络压缩过程__
 
 # Information
 
