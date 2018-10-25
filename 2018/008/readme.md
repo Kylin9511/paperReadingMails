@@ -2,7 +2,7 @@
 
 大家好：
 
- <b><span style="color:green">这是2018年度第7篇Arxiv Weekly。</span> </b>
+ <b><span style="color:green">这是2018年度第8篇Arxiv Weekly。</span> </b>
 
 本文是 __模型压缩__ 方向的文章。
 
