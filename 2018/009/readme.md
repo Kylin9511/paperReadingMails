@@ -13,14 +13,19 @@
 # Information
 
 ### Title
-_May the force be with you_
+_Rethinking the Value of Network Pruning_
 
 ### Link
-https://arxiv.org/pdf/May_the_force_be_with_you.pdf
+https://arxiv.org/pdf/1810.05270.pdf
 
 ### Source
 
+- 加州伯克利大学（University of California, Berkeley）
 - 清华大学（Tsinghua University）
+
+### Publication
+
+Under review as a conference paper at International Conference on Machine Learning (ICLR) 2019
 
 # Introduction
 
