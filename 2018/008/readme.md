@@ -60,24 +60,26 @@ Under review as a conference paper at International Conference on Machine Learni
 
 2. [ThiNet](http://openaccess.thecvf.com/content_ICCV_2017/papers/Luo_ThiNet_A_Filter_ICCV_2017_paper.pdf)
 这篇文章是ICCV 2017的会议文章，思路更进一步。同样按比例剪枝channel，但是criterion改为优先选择下一层的feature map中参数最小的channel对应的卷积核进行剪枝。从直觉上，这样会更加靠近我们pruning同时不影响acc性能的意图。
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_01.png?raw=true" width = 55%" /></center>
+<center>
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_01.png?raw=true" width = 55% />
+</center>
 
 3. [regression based Feature Reconstruction](http://openaccess.thecvf.com/content_ICCV_2017/papers/He_Channel_Pruning_for_ICCV_2017_paper.pdf)
 这篇文章是ICCV 2017的会议文章，思路更更进一步。同样按比例剪枝channel，但是criterion改为尽量使得剪枝后下下层的feature map受影响最小。显然这又进一步试图保留原网络的性能。
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_02.png?raw=true" width = 55%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_02.png?raw=true" width = 55% /></center>
 
 4. [Network Slimming](http://openaccess.thecvf.com/content_ICCV_2017/papers/Liu_Learning_Efficient_Convolutional_ICCV_2017_paper.pdf)
 这篇文章是ICCV 2017的会议文章，<span style="color:blue">与前面文章不同，本文是在训练过程中自动产生每个层的pruning rate，所以结构不经过训练无法得到</span>。
-实际上，本文采用的方式是引用BN层的scaler$\alpha$作为scaling factor，然后动态剪枝去除其中不重要的channel。因此是一种动态稀疏化网络的操作。
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_03.png?raw=true" width = 85%" /></center>
+实际上，本文采用的方式是引用BN层的scaler $\alpha$作为scaling factor，然后动态剪枝去除其中不重要的channel。因此是一种动态稀疏化网络的操作。
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_03.png?raw=true" width = 85% /></center>
 
 5. [Sparse Structure Seletction](https://arxiv.org/pdf/1707.01213.pdf)
 这篇文章是ECCV 2018会议文章。文章是Network Slimming的变体，仍然是生成了scaling factor指导pruning，只不过不是channel pruning而是block pruning。有些像[BlockDrop: Dynamic Inference Paths in Residual Networks](http://openaccess.thecvf.com/content_cvpr_2018/papers/Wu_BlockDrop_Dynamic_Inference_CVPR_2018_paper.pdf)一文，当然，本文没有引入Reinforcement Learning。
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_04.png?raw=true" width = 85%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_04.png?raw=true" width = 85% /></center>
 
 6. [Non-structured Weight Pruning](https://papers.nips.cc/paper/5784-learning-both-weights-and-connections-for-efficient-neural-network.pdf)
 这篇文章为NIPS 2015会议文章，韩松代表作之一，引用已经800+。核心方法是“啥也不说，就是硬干”，直接进行element-wise pruning，然后finetune。后续还有所谓的DSD等方法，其实就是反复硬干。至于pruning rate就是手工大量实验堆叠出一个最佳值即可。
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_05.png?raw=true" width = 85%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_05.png?raw=true" width = 85% /></center>
 
 # Experiments
 
@@ -85,7 +87,7 @@ Under review as a conference paper at International Conference on Machine Learni
 本文属于探究性质的论文，所以实验的作用是探索和证明文章的观点。
 
 文章把6个baseline网络分为两类，一类是所谓的Pre-defined Target Architecture（前三个实验）；另一类是所谓的Automatically Discovered Target Architecture（后三个实验）。其区别就是不训练能不能画出来大概的结构，如下图所示：
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_06.png?raw=true" width = 45%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_06.png?raw=true" width = 45% /></center>
 
 ### 2.训练细节
 在训练参数上，文章采用了CIFAR10/100和ImageNet的经典参数，和VGG、ResNet、DenseNet的经典backbone，pruning method就是前文所述的6个。
@@ -97,27 +99,27 @@ Under review as a conference paper at International Conference on Machine Learni
 
 ### 3.实验结果
 1. [$L_1$-norm based channel pruning](https://www.researchgate.net/profile/Igor_Durdanovic/publication/307536925_Pruning_Filters_for_Efficient_ConvNets/links/585189cf08ae95fd8e168343/Pruning-Filters-for-Efficient-ConvNets.pdf)。
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_07.png?raw=true" width = 85%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_07.png?raw=true" width = 85% /></center>
 
 2. [ThiNet](http://openaccess.thecvf.com/content_ICCV_2017/papers/Luo_ThiNet_A_Filter_ICCV_2017_paper.pdf)
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_08.png?raw=true" width = 85%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_08.png?raw=true" width = 85% /></center>
 
 3. [regression based Feature Reconstruction](http://openaccess.thecvf.com/content_ICCV_2017/papers/He_Channel_Pruning_for_ICCV_2017_paper.pdf)
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_09.png?raw=true" width = 85%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_09.png?raw=true" width = 85% /></center>
 
 4. [Network Slimming](http://openaccess.thecvf.com/content_ICCV_2017/papers/Liu_Learning_Efficient_Convolutional_ICCV_2017_paper.pdf)
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_10.png?raw=true" width = 85%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_10.png?raw=true" width = 85% /></center>
 
 5. [Sparse Structure Seletction](https://arxiv.org/pdf/1707.01213.pdf)
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_11.png?raw=true" width = 85%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_11.png?raw=true" width = 85% /></center>
 
 6. [Non-structured Weight Pruning](https://papers.nips.cc/paper/5784-learning-both-weights-and-connections-for-efficient-neural-network.pdf)
 
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_12.png?raw=true" width = 85%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_12.png?raw=true" width = 85% /></center>
 
 其结论基本是统一的，就是或者Scratch-E，或者Scratch-B，能够持平或者超出利用原模型参数finetune的结果。
 
@@ -132,24 +134,24 @@ Under review as a conference paper at International Conference on Machine Learni
 
 ### 2.猜想的观察性验证
 为了验证这个想法，作者测试了“胡乱压缩”和用验证有效的压缩策略压缩，带来的“网络参数效率”的不同，如下图所示：
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_13.png?raw=true" width = 85%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_13.png?raw=true" width = 85% /></center>
 
 另外，作者发现经过优秀的压缩pipeline得到的小网络结构，其实是倾向于“有规律可循”的，也就是说其实压缩类似于一个天然的小网络设计过程，设计出来的东西符合一定的规律，而不是乱七八糟无章可循。
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_14.png?raw=true" width = 85%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_14.png?raw=true" width = 85% /></center>
 
 值得注意的是，文章中给出了上图所示的element-wise pruning最终的结果。<span style="color:blue">可以看到随着迭代次数的增多和层数的加深，$3\times3$的卷积核渐渐退化成了对称的“十字架”的模样。</span>启发我们可以设计类似模样的“异形卷积核”或者“渐变卷积核”来减少网络的计算量同时保持网络性能。
 
 ### 3.猜想的设计性验证
 为了进一步证明上述说法是成立的，作者利用上面发现的规律，基于VGG19和CIFRA100，设计了一些小网络进行测试。具体来说：
 - 设计Guided Pruning系列网络，方式为基于Network Slimming方法先得到一个pruning好的网络，然后统计每个“layer stage”<span style="color:gray">[也即下图中的同颜色layer]</span>中的平均channel剪枝数。利用这个剪枝比例直接对VGG19进行重新剪枝得到的网络即为Guided Pruning Network
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_15.png?raw=true" width = 85%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_15.png?raw=true" width = 85% /></center>
 
 - 设计Guided Sparsify系列网络，方式为基于Non-structured Weight Pruning方法观察pruning结束后卷积核的平均强度<span style="color:gray">[如上上图中Figure4所示]</span>。然后根据这个强度拟合一个大概规律直接搭建稀疏化的网络结构，称为Guided Sparsify Network。
 
 - 设计transfered Guided系列对比网络。这是基于一个有趣的观察，<span style="color:blue">同一个系列网络经过pruning后会得到相似的规律，这样的规律有可迁移性。</span>故设计实验利用VGG16+CIFAR10进行训练+pruning+获得Guiding超参数，然后在VGG19上根据超参数进行网络搭建，并在CIFRA100上测试。
 
 其结果如下图所示：
-<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_16.png?raw=true" width = 85%" /></center>
+<center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_16.png?raw=true" width = 85% /></center>
 
 可以看到，不但Guided系列的网络能够达到和pruning pipeline获得的最优网络相似的性能，连Transfered系列的网络也几部不分上下。
 
@@ -178,7 +180,7 @@ Under review as a conference paper at International Conference on Machine Learni
 众所周知传统的NAS一般基于强化学习（Reinforcement Learning, RL）或者进化算法（Evolutionary Algorithm, EA）。在复杂度上显然超过pruning算法的几个数量级。
 
 而近来：
-[CVPR2018：MorphNet: Fast & Simple Resource-Constrained Structure Learning of DeepNetworks](https://arxiv.org/pdf/1711.06798.pdf)一文当中引入了类似Network Slimming的结构进行网络自动化设计；
-[ICML2018：Efficient neural architecture search via parameter sharing](https://arxiv.org/pdf/1802.03268.pdf)等文章也利用大网络参数继承的方式提高NAS的效率。这显然是传统pruning思路应用到NAS方向的体现。
+- [CVPR2018：MorphNet: Fast & Simple Resource-Constrained Structure Learning of DeepNetworks](https://arxiv.org/pdf/1711.06798.pdf)一文当中引入了类似Network Slimming的结构进行网络自动化设计；
+- [ICML2018：Efficient neural architecture search via parameter sharing](https://arxiv.org/pdf/1802.03268.pdf)等文章也利用大网络参数继承的方式提高NAS的效率。这显然是传统pruning思路应用到NAS方向的体现。
 
 另一方面，我们之前也提到过，利用RL来进行pruning就在18年9月份左右大大火了一把，谷歌、腾讯、MIT（韩松组）等机构都推出了基于RL的网络自动剪枝算法/平台。我们还在[Arxiv Weekly 2018/004](https://github.com/luzhilin19951120/paperReadingMails/tree/master/2018/004)中推送过韩松组的相关工作，大家可以回去翻翻回忆一下。
