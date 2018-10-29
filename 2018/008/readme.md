@@ -1,3 +1,5 @@
+[TOC]
+
 # Headline
 
 大家好：
@@ -54,30 +56,59 @@ Under review as a conference paper at International Conference on Machine Learni
 
 为了证明这个观点，本文参考了六种最新的pruning算法/架构作为实验的背景。现列举如下：
 
-1. [$L_1$-norm based channel pruning](https://www.researchgate.net/profile/Igor_Durdanovic/publication/307536925_Pruning_Filters_for_Efficient_ConvNets/links/585189cf08ae95fd8e168343/Pruning-Filters-for-Efficient-ConvNets.pdf)。
+##### [1. $L_1$-norm based channel pruning](https://www.researchgate.net/profile/Igor_Durdanovic/publication/307536925_Pruning_Filters_for_Efficient_ConvNets/links/585189cf08ae95fd8e168343/Pruning-Filters-for-Efficient-ConvNets.pdf)。
 这篇文章是ICLR 2017的会议文章，也是最早提出做channel pruning的文章。<span style="color:gray">[关于weight/channel/layer pruning，可参考之前的[Arxiv Weekly 2018/003](https://github.com/luzhilin19951120/paperReadingMails/tree/master/2018/003)中的论述]</span>
+
 本文作为channel pruning的开山之作，自然使用的是很简洁的方式。具体来说就是使得每一层当中$L_1$范数最小的某个比例 $p$ 的channel被剪枝。
 
-2. [ThiNet](http://openaccess.thecvf.com/content_ICCV_2017/papers/Luo_ThiNet_A_Filter_ICCV_2017_paper.pdf)
+<center>
+<img src="./008_append_01.png?raw=true" width = 85% />
+</center>
+
+可以看到，channel pruing对计算量的节省是直接有效的，对第i个kernel剪枝一个通道将节省$r_i$次计算。
+
+$$r_i= n_ik^2h_{i+1}w_{i+1} + n_{i+2}k^2h_{i+2}w_{i+2}$$
+
+在具体操作的时候，channel pruning还会一道一些问题。
+
+首先是选择channel to prune。本文采用了所有pruing文章几乎通用的一个思路，就是prune掉不敏感（sensitive）的那部分channel。敏感性的衡量方式有很多种，其中最consuming的就是分别剪枝训练后之间看掉点的数目。而本文在各个layer之间的L1 sum分布和敏感性之间建立了对应关系，故而不用训练就能知道个大概。
+
+<center>
+<img src="./008_append_02.png?raw=true" width = 85% />
+</center>
+
+另一个问题是channel pruning的一个细节。也即计算后续pruning的过程中是否考虑前面pruning带来的影响。
+
+<center>
+<img src="./008_append_03.png?raw=true" width = 85% />
+</center>
+
+最后值得一提的是，在channel pruning当中，由于pruning操作会影响下一轮feature map的大小，故在resnet等存在分枝的结构中，需要注意对应关系。本文认为Identity path相比Residual path更加重要，故而在冲突的时候以Identity path的选择为准。
+
+<center>
+<img src="./008_append_04.png?raw=true" width = 85% />
+</center>
+
+##### [2. ThiNet](http://openaccess.thecvf.com/content_ICCV_2017/papers/Luo_ThiNet_A_Filter_ICCV_2017_paper.pdf)
 这篇文章是ICCV 2017的会议文章，思路更进一步。同样按比例剪枝channel，但是criterion改为优先选择下一层的feature map中参数最小的channel对应的卷积核进行剪枝。从直觉上，这样会更加靠近我们pruning同时不影响acc性能的意图。
 <center>
 <img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_01.png?raw=true" width = 55% />
 </center>
 
-3. [regression based Feature Reconstruction](http://openaccess.thecvf.com/content_ICCV_2017/papers/He_Channel_Pruning_for_ICCV_2017_paper.pdf)
+##### [3. regression based Feature Reconstruction](http://openaccess.thecvf.com/content_ICCV_2017/papers/He_Channel_Pruning_for_ICCV_2017_paper.pdf)
 这篇文章是ICCV 2017的会议文章，思路更更进一步。同样按比例剪枝channel，但是criterion改为尽量使得剪枝后下下层的feature map受影响最小。显然这又进一步试图保留原网络的性能。
 <center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_02.png?raw=true" width = 55% /></center>
 
-4. [Network Slimming](http://openaccess.thecvf.com/content_ICCV_2017/papers/Liu_Learning_Efficient_Convolutional_ICCV_2017_paper.pdf)
+##### [4. Network Slimming](http://openaccess.thecvf.com/content_ICCV_2017/papers/Liu_Learning_Efficient_Convolutional_ICCV_2017_paper.pdf)
 这篇文章是ICCV 2017的会议文章，<span style="color:blue">与前面文章不同，本文是在训练过程中自动产生每个层的pruning rate，所以结构不经过训练无法得到</span>。
 实际上，本文采用的方式是引用BN层的scaler $\alpha$作为scaling factor，然后动态剪枝去除其中不重要的channel。因此是一种动态稀疏化网络的操作。
 <center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_03.png?raw=true" width = 85% /></center>
 
-5. [Sparse Structure Seletction](https://arxiv.org/pdf/1707.01213.pdf)
+##### [5. Sparse Structure Seletction](https://arxiv.org/pdf/1707.01213.pdf)
 这篇文章是ECCV 2018会议文章。文章是Network Slimming的变体，仍然是生成了scaling factor指导pruning，只不过不是channel pruning而是block pruning。有些像[BlockDrop: Dynamic Inference Paths in Residual Networks](http://openaccess.thecvf.com/content_cvpr_2018/papers/Wu_BlockDrop_Dynamic_Inference_CVPR_2018_paper.pdf)一文，当然，本文没有引入Reinforcement Learning。
 <center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_04.png?raw=true" width = 85% /></center>
 
-6. [Non-structured Weight Pruning](https://papers.nips.cc/paper/5784-learning-both-weights-and-connections-for-efficient-neural-network.pdf)
+##### [6. Non-structured Weight Pruning](https://papers.nips.cc/paper/5784-learning-both-weights-and-connections-for-efficient-neural-network.pdf)
 这篇文章为NIPS 2015会议文章，韩松代表作之一，引用已经800+。核心方法是“啥也不说，就是硬干”，直接进行element-wise pruning，然后finetune。后续还有所谓的DSD等方法，其实就是反复硬干。至于pruning rate就是手工大量实验堆叠出一个最佳值即可。
 <center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_05.png?raw=true" width = 85% /></center>
 
