@@ -15,4 +15,4 @@ __为了格式考虑，建议下载html文件后用浏览器打开查看__
 |  005  |  2018.10.11  | 模型研究 | _Reconciling Feature-reuse and Overfitting in DenseNet with Specialized Dropout_ <br>运用在DenseNet架构中的全新Dropout。| [URL](https://github.com/luzhilin19951120/paperReadingMails/tree/master/2018/005) |
 |  006  |  2018.10.06  | 模型研究 | _Elastic Neural Networks for Classification_ <br>通过弹性网络架构压制梯度消失来提升部分backbone的性能，同时赋予网络快速inference的能力。| [URL](https://github.com/luzhilin19951120/paperReadingMails/tree/master/2018/006) |
 |  007  |  2018.11.02  | 人脸数据 | _Consensus-Driven Propagation in Massive Unlabeled Data for Face Recognition_ <br>利用半监督学习和主动学习的思想，依托已有的标注数据，将海量无标注数据自动标注后引入训练，提升训练效果。| [URL](https://github.com/luzhilin19951120/paperReadingMails/tree/master/2018/008) |
-|  008  |  2018.10.25  | 模型综述 | _Rethinking the Value of Network Pruning_ <br>对网络压缩技术的探究性工作，指出了几个旧有的错误印象，得出了新的指导性结论，能够辅助优化网络压缩过程。| [URL](https://github.com/luzhilin19951120/paperReadingMails/tree/master/2018/008) |
+|  008  |  2018.10.25  | 压缩综述 | _Rethinking the Value of Network Pruning_ <br>对网络压缩技术的探究性工作，指出了几个旧有的错误印象，得出了新的指导性结论，能够辅助优化网络压缩过程。| [URL](https://github.com/luzhilin19951120/paperReadingMails/tree/master/2018/008) |
