@@ -6,7 +6,7 @@
 
  <b><span style="color:green">这是2018年度第8篇Arxiv Weekly。</span> </b>
 
-本文是 __模型压缩__ 方向的文章。
+本文是 __压缩综述__ 方向的文章。
 
 # Highlight
 
@@ -62,7 +62,7 @@ Under review as a conference paper at International Conference on Machine Learni
 本文作为channel pruning的开山之作，自然使用的是很简洁的方式。具体来说就是使得每一层当中$L_1$范数最小的某个比例 $p$ 的channel被剪枝。
 
 <center>
-<img src="./008_append_01.png?raw=true" width = 85% />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_append_01.png?raw=true" width = 85% />
 </center>
 
 可以看到，channel pruing对计算量的节省是直接有效的，对第i个kernel剪枝一个通道将节省$r_i$次计算。
@@ -74,19 +74,19 @@ $$r_i= n_ik^2h_{i+1}w_{i+1} + n_{i+2}k^2h_{i+2}w_{i+2}$$
 首先是选择channel to prune。本文采用了所有pruing文章几乎通用的一个思路，就是prune掉不敏感（sensitive）的那部分channel。敏感性的衡量方式有很多种，其中最consuming的就是分别剪枝训练后之间看掉点的数目。而本文在各个layer之间的L1 sum分布和敏感性之间建立了对应关系，故而不用训练就能知道个大概。
 
 <center>
-<img src="./008_append_02.png?raw=true" width = 85% />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_append_02.png?raw=true" width = 85% />
 </center>
 
 另一个问题是channel pruning的一个细节。也即计算后续pruning的过程中是否考虑前面pruning带来的影响。
 
 <center>
-<img src="./008_append_03.png?raw=true" width = 85% />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_append_03.png?raw=true" width = 85% />
 </center>
 
 最后值得一提的是，在channel pruning当中，由于pruning操作会影响下一轮feature map的大小，故在resnet等存在分枝的结构中，需要注意对应关系。本文认为Identity path相比Residual path更加重要，故而在冲突的时候以Identity path的选择为准。
 
 <center>
-<img src="./008_append_04.png?raw=true" width = 85% />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_append_04.png?raw=true" width = 85% />
 </center>
 
 ##### [2. ThiNet](http://openaccess.thecvf.com/content_ICCV_2017/papers/Luo_ThiNet_A_Filter_ICCV_2017_paper.pdf)
@@ -101,7 +101,17 @@ $$r_i= n_ik^2h_{i+1}w_{i+1} + n_{i+2}k^2h_{i+2}w_{i+2}$$
 
 ##### [4. Network Slimming](http://openaccess.thecvf.com/content_ICCV_2017/papers/Liu_Learning_Efficient_Convolutional_ICCV_2017_paper.pdf)
 这篇文章是ICCV 2017的会议文章，<span style="color:blue">与前面文章不同，本文是在训练过程中自动产生每个层的pruning rate，所以结构不经过训练无法得到</span>。
-实际上，本文采用的方式是引用BN层的scaler $\alpha$作为scaling factor，然后动态剪枝去除其中不重要的channel。因此是一种动态稀疏化网络的操作。
+
+<center>
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_append_05.png?raw=true" width = 85% />
+</center>
+
+本文采用的方式是引用BN层的scaler $\alpha$作为scaling factor，然后将这个factor动态乘到每一个channel上，有点类似SE的“元操作”。为了保证最后有足够的channel scaling factor是near-zero的，文章引入了一个乘子稀疏化的loss如下式。其中g是稀疏化函数。
+
+$$L = \sum_{(x,y)}l\left(f(x,W),y\right) + \lambda\sum_{\gamma \in \Theta}g(\gamma)$$
+
+在完成稀疏化乘子网络训练后，即可动态剪枝去除其中不重要的channel。
+
 <center><img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_03.png?raw=true" width = 85% /></center>
 
 ##### [5. Sparse Structure Seletction](https://arxiv.org/pdf/1707.01213.pdf)

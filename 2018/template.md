@@ -38,6 +38,7 @@ May the force be with you
 
 May the force be with you
 
--  <span style="color:red">May the force be with you</span> <span style="color:grey">[May the force be with you]</span>
+-  <span style="color:red">May the force be with you</span> 
+<span style="color:gray">[]</span>
 
 <center><img src="./001_01.png?raw=true" width = "80%" /></center>
