@@ -54,7 +54,7 @@ Gpipe通过模型在多卡上的分割和流水线式的前传反传过程，实
 ### 2. Gpipe算法
 
 <center>
-<img src="./009_01.png?raw=true" width = "80%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/009/009_01.png?raw=true" width = "80%" />
 </center>
 
 可以看到，上图(a)中展示了传统的模型并行方法，而(b)给出了这样并行的代价：将模型并行为K个部分，则运行效率变为原本的1/K倍，也即O((K-1)/K)的bubble time损耗。这也是为什么目前工程上很少使用模型并行。
@@ -81,13 +81,13 @@ Gpipe通过模型在多卡上的分割和流水线式的前传反传过程，实
 ### 1. 大模型训练点数展示
 
 <center>
-<img src="./009_02.png?raw=true" width = "80%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/009/009_02.png?raw=true" width = "80%" />
 </center>
 
 可以看到，在GPipe的加成下，成功训练出了较为强大的巨型网络，实现了ImageNet以及多个数据集上，单一网络的最佳测试性能。
 
 <center>
-<img src="./009_03.png?raw=true" width = "50%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/009/009_03.png?raw=true" width = "50%" />
 </center>
 
 本文训练的网络和benchmarks们对比示意图如上。
@@ -95,7 +95,7 @@ Gpipe通过模型在多卡上的分割和流水线式的前传反传过程，实
 ### 2. 八卡基础上扩大模型的能力
 
 <center>
-<img src="./009_04.png?raw=true" width = "80%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/009/009_04.png?raw=true" width = "80%" />
 </center>
 
 当然，正经考察Gpipe性能还是要看，计算资源不变的条件下，并行训练网络的能力。
@@ -105,7 +105,7 @@ Gpipe通过模型在多卡上的分割和流水线式的前传反传过程，实
 ### 3. 多卡加速能力
 
 <center>
-<img src="./009_05.png?raw=true" width = "80%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/009/009_05.png?raw=true" width = "80%" />
 </center>
 
 可以看到在AmoebaNet上实现了近似线性的训练加速，但是在ResNet上由于模型分割导致的损耗（例如重跑forward等），8卡的加速只能到3.5倍左右。
@@ -113,7 +113,7 @@ Gpipe通过模型在多卡上的分割和流水线式的前传反传过程，实
 ### 4. 损耗分析
 
 <center>
-<img src="./009_06.png?raw=true" width = "80%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/009/009_06.png?raw=true" width = "80%" />
 </center>
 
 <span style="color:red">显然Gpipe会导致一定程度的损耗，主要表现在如下两个方面:
