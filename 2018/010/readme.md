@@ -41,7 +41,7 @@ https://arxiv.org/pdf/1802.01548.pdf
 - Using NASNet search space。文章采用了最简化的变异（mutation）方法，使得整个进化过程能够被约束在NASNet的搜索空间中，等于更好地利用先验网络知识。
 
 <center>
-<img src="./010_01.png?raw=true" width = "50%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/010/010_01.png?raw=true" width = "50%" />
 </center>
 
 文章的进化算法如上图所示。
@@ -49,7 +49,7 @@ https://arxiv.org/pdf/1802.01548.pdf
 ### 2. 对NASNet搜索空间的解释
 
 <center>
-<img src="./010_02.png?raw=true" width = "50%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/010/010_02.png?raw=true" width = "50%" />
 </center>
 
 上图左侧可以看到NASNet搜索空间的共性结构，本文中的AmoebaNet在这个空间中生成，自然沿用了同样的结构。
@@ -72,13 +72,13 @@ https://arxiv.org/pdf/1802.01548.pdf
 ### 1. 搜索出的结果
 
 <center>
-<img src="./010_03.png?raw=true" width = "80%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/010/010_03.png?raw=true" width = "80%" />
 </center>
 
 上图为本文中用于性能测试的AmoebaNet-A
 
 <center>
-<img src="./010_04.png?raw=true" width = "80%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/010/010_04.png?raw=true" width = "80%" />
 </center>
 
 上图为另外三种可行的结构B、C、D，在后续的工作中会用到
@@ -86,7 +86,7 @@ https://arxiv.org/pdf/1802.01548.pdf
 ### 2. 网络的性能表现
 
 <center>
-<img src="./010_05.png?raw=true" width = "80%" />
+<img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/010/010_05.png?raw=true" width = "80%" />
 </center>
 
 如图，确实达到了当时ImageNet上up-to-date的水平。
