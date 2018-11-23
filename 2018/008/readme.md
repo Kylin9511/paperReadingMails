@@ -71,7 +71,7 @@ $$r_i= n_ik^2h_{i+1}w_{i+1} + n_{i+2}k^2h_{i+2}w_{i+2}$$
 
 在具体操作的时候，channel pruning还会一道一些问题。
 
-首先是选择channel to prune。本文采用了所有pruing文章几乎通用的一个思路，就是prune掉不敏感（sensitive）的那部分channel。敏感性的衡量方式有很多种，其中最consuming的就是分别剪枝训练后之间看掉点的数目。而本文在各个layer之间的L1 sum分布和敏感性之间建立了对应关系，故而不用训练就能知道个大概。
+首先是选择channel to prune。本文采用了所有pruing文章几乎通用的一个思v路，就是prune掉不敏感（sensitive）的那部分channel。敏感性的衡量方式有很多种，其中最consuming的就是分别剪枝训练后之间看掉点的数目。而本文在各个layer之间的L1 sum分布和敏感性之间建立了对应关系，故而不用训练就能知道个大概。
 
 <center>
 <img src="https://github.com/luzhilin19951120/paperReadingMails/blob/master/2018/008/008_append_02.png?raw=true" width = 85% />
